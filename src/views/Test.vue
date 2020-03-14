@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="current">
     <v-row justify="center" class="pt-5">
       <v-card width="100%">
         <v-card-title>
@@ -12,7 +12,9 @@
           <QuestionInteraction :show="current" v-model="choice" />
         </v-card-text>
         <v-card-actions>
-          <v-btn block large color="primary" @click="commit">Готово</v-btn>
+          <v-btn block large color="primary" @click="commit" :disabled="!choice"
+            >Готово</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-row>
@@ -35,22 +37,36 @@ export default {
   },
   computed: {
     ...mapState(['test', 'position', 'score']),
-    ...mapGetters(['current', 'completed']),
+    ...mapGetters(['current', 'completed', 'defaultChoice']),
     length() {
       return this.test.length
     }
   },
+  mounted() {
+    this.restore()
+    this.choice = this.defaultChoice
+  },
   methods: {
     commit() {
       this.post(this.choice)
+      if (this.choice === this.current.mask) {
+        this.message({
+          text: 'Правильно',
+          color: 'success'
+        })
+      } else {
+        this.message({
+          text: 'Неправильно',
+          color: 'error'
+        })
+      }
       this.next()
-      this.choice = ''
+      this.choice = this.defaultChoice
       if (this.completed) {
-        alert(this.score)
-        this.reset()
+        this.$router.push({ name: 'Outcome' })
       }
     },
-    ...mapMutations(['next', 'post', 'reset'])
+    ...mapMutations(['next', 'post', 'reset', 'restore', 'message'])
   }
 }
 </script>

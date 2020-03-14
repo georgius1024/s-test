@@ -3,19 +3,16 @@
     <v-row justify="center">
       <v-card>
         <v-card-title class="headline mb-1">
-            Приветствие
+          Приветствие
         </v-card-title>
         <v-card-text>
           <p>
-            Приглашаем Вас пройти этот короткий тест на знание основ правил силуэтной стрельбы
+            Приглашаем Вас пройти этот короткий тест на знание основ правил
+            силуэтной стрельбы
           </p>
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
-          <v-btn color="primary" :to="{name: 'Test'}">
-            Начать тест
-          </v-btn>
-          <v-spacer/>
+          <TestingButton caption="Начать тест" />
         </v-card-actions>
       </v-card>
     </v-row>
@@ -23,7 +20,11 @@
 </template>
 
 <script>
+import TestingButton from '../components/TestingButton'
 export default {
-  name: 'root'
+  name: 'root',
+  components: {
+    TestingButton
+  }
 }
 </script>
