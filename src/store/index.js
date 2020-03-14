@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const state = {
   test: require('../test.json').filter(
-    e => e.type === '-1/N' || e.type === 'M/N'
+    e => e.type === '1/N' || e.type === 'M/N'
   ),
   position: Number(localStorage.getItem('position')) || 0,
   score: Number(localStorage.getItem('score')) || 0

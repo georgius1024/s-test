@@ -46,8 +46,8 @@ export default {
       this.next()
       this.choice = ''
       if (this.completed) {
-        this.reset()
         alert(this.score)
+        this.reset()
       }
     },
     ...mapMutations(['next', 'post', 'reset'])

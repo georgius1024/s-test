@@ -12,7 +12,8 @@
       v-for="(answer, index) in show.options"
       :key="index"
       :label="answer"
-      :value="index"
+      :value="String(index)"
+      :input-value="checked(index)"
       @change="toggle($event, index)"
     />
   </div>
@@ -23,14 +24,22 @@ export default {
   name: 'QuestionInteraction',
   props: ['show', 'value'],
   methods: {
+    checked(value) {
+      return this.value.split(',').find(e => e === String(value))
+    },
     toggle(on, value) {
       const opts = this.value
-        ? this.value.split(',').filter(e => e !== value)
+        ? this.value.split(',').filter(e => e !== String(value))
         : []
       if (on) {
-        this.send(opts.concat([value]).join(','))
+        this.send(
+          opts
+            .concat([value])
+            .sort()
+            .join(',')
+        )
       } else {
-        this.send(opts.join(','))
+        this.send(opts.sort().join(','))
       }
     },
     send(value) {
