@@ -2,20 +2,10 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <v-toolbar-title>
-        Базовый тест по силуэтной стрельбе
+        Подготовительный тест по силуэтной стрельбе
       </v-toolbar-title>
     </v-app-bar>
-    <v-snackbar
-      v-model="messageActive"
-      :color="messageColor"
-      :timeout="1000"
-      top
-    >
-      {{ messageText }}
-      <v-btn text @click="messageActive = false">
-        Close
-      </v-btn>
-    </v-snackbar>
+    <MessagePopup />
     <v-content>
       <router-view />
     </v-content>
@@ -28,8 +18,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import MessagePopup from './components/MessagePopup'
 export default {
   name: 'App',
+  components: {
+    MessagePopup
+  },
   data: () => ({
     messageActive: false
   }),

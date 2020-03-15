@@ -14,26 +14,37 @@ function defaultChoice(question) {
     return ''
   }
 }
+function randomSequence(questions) {
+  return questions.map((e, index) => index).sort(() => Math.random() - 0.5)
+}
+
 const testData = require('../test.json')
-// .filter(
-//  e => e.type === 'sort' /// e => e.type === '1/N' || e.type === 'M/N'
-// )
-const randomSequence = testData
-  .map((e, index) => index)
-  .sort(() => Math.random() - 0.5)
+/*
+testData.questions = testData.questions.filter(
+  //e => e.type === 'sort' ///
+  //e => e.type === '1/N'
+  e => e.type === 'M/N'
+)
+*/
+
+const initailRandomSequence = randomSequence(testData.questions)
 const state = {
-  test: testData,
-  sequence: randomSequence,
+  questions: testData.questions,
+  sequence: initailRandomSequence,
   position: 0,
   score: 0,
   messageText: '',
   messageColor: ''
 }
 const getters = {
-  current: state => state.test[state.sequence[state.position]],
-  completed: state => state.position >= state.test.length,
+  current: state => state.questions[state.sequence[state.position]],
+  length: state => state.questions.length,
+  completed: state => state.position >= state.questions.length,
   defaultChoice: state =>
-    defaultChoice(state.test[state.sequence[state.position]])
+    defaultChoice(state.questions[state.sequence[state.position]]),
+  rightChoice: state =>
+    state.position < state.questions.length &&
+    state.questions[state.sequence[state.position]].mask
 }
 const mutations = {
   next: state => {
@@ -41,7 +52,9 @@ const mutations = {
     localStorage.setItem('position', state.position)
   },
   post: (state, choice) => {
-    if (String(choice) === state.test[state.position].mask) {
+    if (
+      String(choice) === state.questions[state.sequence[state.position]].mask
+    ) {
       state.score++
       localStorage.setItem('score', state.score)
     }
@@ -49,9 +62,7 @@ const mutations = {
   reset: state => {
     state.position = 0
     state.score = 0
-    state.sequence = testData
-      .sort(() => Math.random() - 0.5)
-      .map((e, index) => index)
+    state.sequence = randomSequence(testData.questions)
     localStorage.setItem('position', state.position)
     localStorage.setItem('score', state.score)
     localStorage.setItem('sequence', JSON.stringify(state.sequence))
@@ -59,7 +70,7 @@ const mutations = {
   restore: state => {
     state.sequence = JSON.parse(localStorage.getItem('sequence'))
     if (!state.sequence) {
-      state.sequence = randomSequence
+      state.sequence = initailRandomSequence
       localStorage.setItem('sequence', JSON.stringify(state.sequence))
     }
     state.position = Number(localStorage.getItem('position')) || 0

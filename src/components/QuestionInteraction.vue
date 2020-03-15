@@ -38,9 +38,9 @@
       :options="sortableOptions"
     >
       <div v-for="item in sortedOptions" :key="item.id">
-        <v-list-item>
+        <v-list-item class="sort-handle">
           <v-list-item-icon>
-            <v-icon v-text="'mdi-menu'" class="sort-handle"></v-icon>
+            <v-icon v-text="'mdi-menu'"></v-icon>
           </v-list-item-icon>
           <v-list-item-content>
             <v-list-item-title v-text="item.option" />
@@ -119,5 +119,6 @@ export default {
 <style scoped>
 .sort-handle {
   cursor: pointer;
+  user-select: none;
 }
 </style>

@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 Vue.config.errorHandler = error => {
+  console.error(error)
   store.commit('message', { text: error.message, color: 'error' })
   router.push('/')
 }

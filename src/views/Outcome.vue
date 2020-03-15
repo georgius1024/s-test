@@ -14,7 +14,7 @@
   </v-container>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import TestingButton from '../components/TestingButton'
 export default {
   name: 'Outcome',
@@ -22,10 +22,8 @@ export default {
     TestingButton
   },
   computed: {
-    ...mapState(['test', 'position', 'score']),
-    length() {
-      return this.test.length
-    }
+    ...mapState(['score']),
+    ...mapGetters(['length'])
   }
 }
 </script>
